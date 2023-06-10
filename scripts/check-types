@@ -1,0 +1,4 @@
+#!/bin/bash
+[ -x "$(command -v mypy)" ] || pip install mypy
+mypy --install-types
+mypy trashcli tests
