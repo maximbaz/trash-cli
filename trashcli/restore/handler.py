@@ -45,9 +45,6 @@ class HandlerImpl(Handler):
                                                         overwrite)
         my_output.apply_to(self.output)
 
-    def report_no_files_found(self, directory):  # type: (str) -> None
-        self.output.println(Outputs.NoFileFound(directory).as_string())
-
 
 class Outputs:
     class NoFileFound:
