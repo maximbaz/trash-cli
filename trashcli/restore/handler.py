@@ -30,15 +30,13 @@ class HandlerImpl(Handler):
                              overwrite,  # type: bool
                              ):
         if not trashed_files:
-            self.report_no_files_found(self.cwd.getcwd_as_realpath())
+            self.output.println(Outputs.NoFileFound(self.cwd.getcwd_as_realpath()).as_string())
         else:
             for i, trashed_file in enumerate(trashed_files):
-                self.output.println("%4d %s %s" % (i,
-                                                   trashed_file.deletion_date,
-                                                   trashed_file.original_location))
+                self.output.println(Outputs.PrintFile(i, trashed_file).as_string())
             self.restore_asking_the_user(trashed_files, overwrite)
 
-    def restore_asking_the_user(self, trashed_files, overwrite=False):
+    def restore_asking_the_user(self, trashed_files, overwrite):
         my_output = OutputRecorder()
         restore_asking_the_user = RestoreAskingTheUser(self.input,
                                                        self.restorer,
@@ -48,5 +46,25 @@ class HandlerImpl(Handler):
         my_output.apply_to(self.output)
 
     def report_no_files_found(self, directory):  # type: (str) -> None
-        self.output.println(
-            "No files trashed from current dir ('%s')" % directory)
+        self.output.println(Outputs.NoFileFound(directory).as_string())
+
+
+class Outputs:
+    class NoFileFound:
+        def __init__(self, directory):
+            self.directory = directory
+
+        def as_string(self):
+            return "No files trashed from current dir ('%s')" % self.directory
+
+    class PrintFile:
+        def __init__(self, index,  # type: int
+                     trashed_file,  # type: TrashedFile
+                     ):
+            self.index = index
+            self.trashed_file = trashed_file
+
+        def as_string(self):
+            return "%4d %s %s" % (self.index,
+                                  self.trashed_file.deletion_date,
+                                  self.trashed_file.original_location)
