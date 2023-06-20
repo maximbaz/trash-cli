@@ -4,7 +4,7 @@ name: Python test
 
 on:
   push:
-    branches: [ master ]
+    branches: [ master, prova-2.7 ]
   pull_request:
     branches: [ master ]
 
@@ -15,7 +15,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest]
-        python-version: ['2.7', '3.7', '3.8', '3.9', '3.10', '3.11']
+        python-version: ['3.7', '3.8', '3.9', '3.10', '3.11']
 
     steps:
     - uses: actions/checkout@v3
