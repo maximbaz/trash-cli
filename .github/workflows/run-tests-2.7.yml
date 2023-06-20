@@ -1,0 +1,25 @@
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-python-with-github-actions
+name: Python test
+
+on:
+  push:
+    branches: [ master, prova-2.7 ]
+  pull_request:
+    branches: [ master, prova-2.7 ]
+
+jobs:
+  build:
+    # the hack used to run this job with python 2.7 is explained here:
+    # https://github.com/actions/setup-python/issues/672#issuecomment-1589120020
+    runs-on: ubuntu-20.04
+    container:
+      image: python:2.7-buster
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Upgrade pip
+      run: python -m pip install --upgrade pip
+    - name: Install dependencies
+      run: python -m pip install -r requirements-dev.txt -r requirements.txt
+    - name: Run tests
+      run: python -m pytest
