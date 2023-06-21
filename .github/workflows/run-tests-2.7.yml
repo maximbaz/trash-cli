@@ -20,10 +20,12 @@ jobs:
     - run: id -a
     - run: pwd
     - run: groups
+    - run: ls -la
     - name: set up user
       run: |
         useradd runner --shell=/bin/bash --create-home
-        sudo -u runner python -m pip install --upgrade pip
-        sudo -u runner python -m pip install -r requirements-dev.txt -r requirements.txt
-        sudo -u runner python -m pip freeze
-        sudo -u runner python -m pytest
+        export PATH="/home/runner/.local/bin:$PATH"
+        su - runner -c 'python -m pip install --upgrade pip'
+        su - runner -c 'python -m pip install -r requirements-dev.txt -r requirements.txt'
+        su - runner -c 'python -m pip freeze'
+        su - runner -c 'python -m pytest'
