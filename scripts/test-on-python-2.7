@@ -1,0 +1,10 @@
+#!/bin/bash
+set -o errexit
+
+SCRIPT_DIR="$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
+cd "$SCRIPT_DIR/../"
+
+docker run -i --rm -v "$PWD":/app -w /app python:2.7-buster bash << 'EOF'
+useradd user --create-home --shell /bin/bash
+su user -c 'scripts/run-tests-ci && scripts/test-dists'
+EOF

@@ -17,15 +17,5 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-    - run: id -a
-    - run: pwd
-    - run: groups
-    - run: ls -la
-    - name: set up user
-      run: |
-        useradd runner --shell=/bin/bash --create-home
-        export PATH="/home/runner/.local/bin:$PATH"
-        su - runner -c 'python -m pip install --upgrade pip'
-        su - runner -c 'python -m pip install -r requirements-dev.txt -r requirements.txt'
-        su - runner -c 'python -m pip freeze'
-        su - runner -c 'python -m pytest'
+    - name: test on python 2.7
+      run: scripts/test-on-python-2.7
