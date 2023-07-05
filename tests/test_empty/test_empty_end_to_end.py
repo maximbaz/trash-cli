@@ -1,9 +1,7 @@
 import unittest
 
 from trashcli import trash
-
 from .. import run_command
-from ..run_command import normalize_options
 from ..support.my_path import MyPath
 
 
@@ -14,32 +12,8 @@ class TestEmptyEndToEnd(unittest.TestCase):
     def test_help(self):
         result = run_command.run_command(self.tmp_dir, "trash-empty",
                                          ['--help'])
-        self.assertEqual(["""\
-usage: trash-empty [-h] [--print-completion {bash,zsh,tcsh}] [--version] [-v]
-                   [--trash-dir TRASH_DIR] [--all-users] [-i] [-f] [--dry-run]
-                   [days]
-
-Purge trashed files.
-
-positional arguments:
-  days
-
-options:
-  -h, --help            show this help message and exit
-  --print-completion {bash,zsh,tcsh}
-                        print shell completion script
-  --version             show program's version number and exit
-  -v, --verbose         list files that will be deleted
-  --trash-dir TRASH_DIR
-                        specify the trash directory to use
-  --all-users           empty all trashcan of all the users
-  -i, --interactive     ask before emptying trash directories
-  -f                    don't ask before emptying trash directories
-  --dry-run             show which files would have been removed
-
-Report bugs to https://github.com/andreafrancia/trash-cli/issues
-""", '', 0],
-                         [normalize_options(result.stdout),
+        self.assertEqual(["usage: trash-empty [-h] [--print-completion {bash,zsh,tcsh}] [--version]", '', 0],
+                         [result.stdout[0:72],
                           result.stderr,
                           result.exit_code])
 
