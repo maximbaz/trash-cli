@@ -1,7 +1,10 @@
-from typing import NamedTuple, Iterable, Optional
+from typing import Iterable
+from typing import NamedTuple
+from typing import Optional
 
 from trashcli.restore.info_files import InfoFiles
 from trashcli.restore.trash_directories import TrashDirectories
+from trashcli.trash import debug_print
 
 
 class InfoDirSearcher:
@@ -17,6 +20,7 @@ class InfoDirSearcher:
                              ): # type: (...) -> Iterable[FileFound]
         for trash_dir_path, volume in self.trash_directories.list_trash_dirs(
                 trash_dir_from_cli):
+            debug_print(">>>> found trash dir: %s" % trash_dir_path)
             for type, path in self.info_files.all_info_files(trash_dir_path):
                 yield FileFound(type, path, volume)
 

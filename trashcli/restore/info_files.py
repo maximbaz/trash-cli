@@ -1,6 +1,7 @@
 import os
 
 from trashcli.restore.file_system import ListingFileSystem
+from trashcli.trash import debug_print
 
 
 class InfoFiles:
@@ -14,9 +15,10 @@ class InfoFiles:
         info_dir = os.path.join(norm_path, 'info')
         try:
             for info_file in self.fs.list_files_in_dir(info_dir):
+                debug_print(">>>> info_file: %s" % info_file)
                 if not os.path.basename(info_file).endswith('.trashinfo'):
                     yield ('non_trashinfo', info_file)
                 else:
                     yield ('trashinfo', info_file)
-        except OSError:  # when directory does not exist
-            pass
+        except OSError as e:  # when directory does not exist
+            debug_print(">>>> exception: %s" % e)

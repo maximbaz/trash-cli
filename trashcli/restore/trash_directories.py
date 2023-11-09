@@ -1,14 +1,17 @@
 # Copyright (C) 2007-2023 Andrea Francia Trivolzio(PV) Italy
-from abc import abstractmethod, ABCMeta
+from abc import ABCMeta
+from abc import abstractmethod
+from typing import Optional
 
 import six
-from typing import Optional
 
 from trashcli.fstab.volume_of import VolumeOf
 from trashcli.fstab.volumes import Volumes
 from trashcli.lib.environ import Environ
-from trashcli.lib.trash_dirs import (
-    volume_trash_dir1, volume_trash_dir2, home_trash_dir)
+from trashcli.lib.trash_dirs import home_trash_dir
+from trashcli.lib.trash_dirs import volume_trash_dir1
+from trashcli.lib.trash_dirs import volume_trash_dir2
+from trashcli.trash import debug_print
 
 
 @six.add_metaclass(ABCMeta)
@@ -65,6 +68,7 @@ class TrashDirectories1:
 
     def all_trash_directories(self):
         volumes_to_check = self.volumes.list_mount_points()
+        debug_print(">>>> volumes_to_check: %s" % volumes_to_check)
         for path1, volume1 in home_trash_dir(self.environ, self.volumes):
             yield path1, volume1
         for volume in volumes_to_check:
